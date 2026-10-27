@@ -1,3 +1,4 @@
 .env
 *.mp3
 dist
+node_modules
