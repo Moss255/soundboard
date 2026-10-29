@@ -1,0 +1,44 @@
+body {
+  margin: 0;
+  height: 100dvh;             /* dvh follows mobile browser toolbars as they show/hide */
+  display: grid;
+  grid-template-rows: 1fr auto;
+}
+
+main {
+  overflow-y: auto;           /* content scrolls here, not the whole page */
+}
+
+menu-bar {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* registered properties let the gradients transition smoothly between levels */
+@property --w1    { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --w2    { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --w3    { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --w4    { syntax: '<color>'; inherits: true; initial-value: transparent; }
+@property --reach { syntax: '<percentage>'; inherits: true; initial-value: 40%; }
+
+html {
+  transition: --w1 1.2s ease, --w2 1.2s ease, --w3 1.2s ease,
+              --w4 1.2s ease, --reach 1.2s ease;
+}
+
+body::before {
+  content: "";
+  position: fixed; inset: 0; z-index: -1;
+  pointer-events: none;
+  background:
+    repeating-radial-gradient(circle at 100% 100%, transparent 0 12px, var(--w1) 13px, transparent 14px),
+    repeating-radial-gradient(circle at 60% 125%,  transparent 0 12px, var(--w2) 13px, transparent 14px),
+    repeating-radial-gradient(circle at 110% 45%,  transparent 0 12px, var(--w3) 13px, transparent 14px),
+    repeating-radial-gradient(circle at 30% 140%,  transparent 0 12px, var(--w4) 13px, transparent 14px);
+  mask-image: radial-gradient(circle at 90% 100%, #000 10%, transparent var(--reach));
+}
+
+html[data-level="0"] { --w1: #7F77DD40; --reach: 40%; }
+html[data-level="1"] { --w1: #7F77DD59; --w2: #1D9E7559; --reach: 55%; }
+html[data-level="2"] { --w1: #7F77DD59; --w2: #1D9E7559; --w3: #378ADD4D; --reach: 72%; }
+html[data-level="3"] { --w1: #7F77DD66; --w2: #1D9E7566; --w3: #378ADD59; --w4: #D4537E4D; --reach: 92%; }
+html[data-level="4"] { --w1: #7F77DD80; --w2: #1D9E7580; --w3: #378ADD73; --w4: #D4537E66; --reach: 125%; }
